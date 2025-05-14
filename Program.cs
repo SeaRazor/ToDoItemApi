@@ -9,6 +9,22 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddTodoContext(builder.Configuration);
 builder.Services.AddScoped<ITodoService, TodoService>();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "MyAllowSpecificOrigins",
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:5000",
+                "http://localhost:5173");
+            builder.AllowAnyMethod();
+            builder.AllowAnyHeader();
+
+
+
+        });
+});
+
+
 
 var app = builder.Build();
 
@@ -26,6 +42,7 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.MapTodoEndpoints();
+app.UseCors("MyAllowSpecificOrigins");
 
 app.Run();
 

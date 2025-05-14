@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using ToDoApi.Models;
 using ToDoApi.Services;
 
@@ -11,7 +12,7 @@ public static class TodoEndpoints
         {
             if (daysToExpire.HasValue)
             {
-                return await todoService.GetByDaysToExpireAsync(daysToExpire.Value);
+                return await todoService.GetActualAsync(daysToExpire.Value);
             }
             return await todoService.GetAllAsync();
         });
@@ -24,5 +25,18 @@ public static class TodoEndpoints
             var createdTodo = await todoService.CreateAsync(todo);
             return Results.Created($"/todos/{createdTodo.Id}", createdTodo);
         });
+
+        app.MapDelete("/todos/{id}", async (ITodoService todoService, int id) =>
+        {
+            var deletionResult = await todoService.DeleteAsync(id);
+            return deletionResult is null ? Results.NotFound() : Results.Ok($"ToDo {id} was deleted successfully");
+        });
+        app.MapPut("/todos/{id}", async (ITodoService todoService, int id, [FromBody]TodoItem todo) =>
+        {
+            var updatedTodo = await todoService.UpdateAsync(id, todo);
+            return updatedTodo is null ? Results.NotFound() : Results.Ok(updatedTodo);
+
+        });
+
     }
 } 
