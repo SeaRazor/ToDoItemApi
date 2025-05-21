@@ -1,0 +1,41 @@
+### Get all todos
+GET http://localhost:5000/todos
+Accept: application/json
+
+### Get todos with daysToExpire query
+GET http://localhost:5000/todos?daysToExpire=3
+Accept: application/json
+
+### Get expired todos
+GET http://localhost:5000/todos/expired
+Accept: application/json
+
+### Get actual todos (numberOfDays query required)
+GET http://localhost:5000/todos/actual?numberOfDays=7
+Accept: application/json
+
+### Create a new todo
+POST http://localhost:5000/todos
+Content-Type: application/json
+Accept: application/json
+
+{
+  "title": "Sample Task",
+  "description": "Sample description",
+  "dueDate": "2025-06-01T00:00:00Z"
+}
+
+### Delete a todo by id
+DELETE http://localhost:5000/todos/1
+Accept: application/json
+
+### Update a todo by id
+PUT http://localhost:5000/todos/1
+Content-Type: application/json
+Accept: application/json
+
+{
+  "title": "Updated Task",
+  "description": "Updated description",
+  "dueDate": "2025-06-10T00:00:00Z"
+}

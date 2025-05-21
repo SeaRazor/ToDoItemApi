@@ -19,6 +19,9 @@ public static class TodoEndpoints
 
         app.MapGet("/todos/expired", async (ITodoService todoService) => 
             await todoService.GetExpiredAsync());
+        
+        app.MapGet("/todos/actual", async (ITodoService todoService, [FromQuery] int numberOfDays) => 
+            await todoService.GetActualAsync(numberOfDays));
 
         app.MapPost("/todos", async (ITodoService todoService, TodoItem todo) => 
         {
